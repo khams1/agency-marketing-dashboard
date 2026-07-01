@@ -24,31 +24,39 @@
         <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Ad Spend</p>
-                <h3 class="text-2xl font-bold mt-1 text-white">$7,707</h3>
-                <p class="text-xs text-emerald-400 mt-2 font-medium">● 22.7x blended ROAS</p>
+                <h3 id="kpi-ad-spend" class="text-2xl font-bold mt-1 text-white">$0</h3>
+                <p id="kpi-roas" class="text-xs text-emerald-400 mt-2 font-medium">● 0x blended ROAS</p>
             </div>
             <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Client Revenue</p>
-                <h3 class="text-2xl font-bold mt-1 text-white">$174,828</h3>
-                <p class="text-xs text-gray-400 mt-2">$55.57 avg order value</p>
+                <h3 id="kpi-revenue" class="text-2xl font-bold mt-1 text-white">$0</h3>
+                <p id="kpi-aov" class="text-xs text-gray-400 mt-2">$0.00 avg order value</p>
             </div>
             <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Orders</p>
-                <h3 class="text-2xl font-bold mt-1 text-white">3,146</h3>
-                <p class="text-xs text-blue-400 mt-2">1,257 paying customers</p>
+                <h3 id="kpi-orders" class="text-2xl font-bold mt-1 text-white">0</h3>
+                <p id="kpi-customers" class="text-xs text-blue-400 mt-2">0 paying customers</p>
             </div>
             <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Conversion Rate</p>
-                <h3 class="text-2xl font-bold mt-1 text-white">2.52%</h3>
+                <h3 id="kpi-conversion" class="text-2xl font-bold mt-1 text-white">0%</h3>
                 <p class="text-xs text-gray-400 mt-2">site visits ➔ orders</p>
             </div>
         </section>
 
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 bg-[#161925] p-6 rounded-xl border border-gray-800 shadow-xl flex flex-col justify-between">
-                <div>
-                    <h4 class="text-sm font-bold text-gray-200">Revenue & Gross Margin Trend</h4>
-                    <p class="text-xs text-gray-400 mb-4">Monthly revenue vs gross margin performance</p>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-200">Revenue & Gross Margin Trend</h4>
+                        <p class="text-xs text-gray-400">Dynamic system timeline performance metrics</p>
+                    </div>
+                    <div class="flex bg-[#0f111a] p-1 rounded-lg border border-gray-800 space-x-1 text-xs">
+                        <button id="btn-day" class="px-3 py-1.5 rounded-md hover:bg-gray-800 text-gray-400 transition-all font-medium">Day</button>
+                        <button id="btn-week" class="px-3 py-1.5 rounded-md hover:bg-gray-800 text-gray-400 transition-all font-medium">Week</button>
+                        <button id="btn-month" class="px-3 py-1.5 rounded-md bg-blue-600 text-white transition-all font-medium">Month</button>
+                        <button id="btn-inception" class="px-3 py-1.5 rounded-md hover:bg-gray-800 text-gray-400 transition-all font-medium">Since Inception</button>
+                    </div>
                 </div>
                 <div class="h-64 relative">
                     <canvas id="revenueChart"></canvas>
@@ -61,7 +69,7 @@
                         <h4 class="text-sm font-bold text-blue-400 uppercase tracking-wider">🤖 AI Weekly Intelligence</h4>
                         <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-mono">READY</span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-4">Generated insights based on past 7 days performance</p>
+                    <p class="text-xs text-gray-400 mb-4">Generated insights based on past performance metrics</p>
                     
                     <div class="space-y-4">
                         <div class="bg-[#0f111a] p-3 rounded-lg border border-gray-800">
@@ -78,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors shadow-lg shadow-blue-600/10">
+                <button id="approve-report-btn" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2.5 px-4 rounded-lg transition-all shadow-lg shadow-blue-600/10">
                     Approve & Copy Report
                 </button>
             </div>
@@ -87,57 +95,14 @@
     </main>
 
    <script>
-        // Fetch data.json and update the DOM elements dynamically
-        async function loadDashboardData() {
-            try {
-                // Fetch the JSON file from the repository root
-                const response = await fetch('./data.json');
-                const data = await response.json();
+        let cachedGraphData = null;
+        let myChart = null;
 
-                // Update UI Text Elements dynamically
-                document.querySelector('h3:nth-of-type(1)').innerText = data.totalAdSpend || "$0";
-                document.querySelector('p.text-emerald-400').innerText = data.blendedRoas || "";
-                document.querySelector('h3:nth-of-type(2)').innerText = data.totalRevenue || "$0";
-                document.querySelector('p.text-gray-400:nth-of-type(1)').innerText = data.avgOrderValue || "";
-                document.querySelector('h3:nth-of-type(3)').innerText = data.totalOrders || "0";
-                document.querySelector('p.text-blue-400').innerText = data.payingCustomers || "";
-                document.querySelector('h3:nth-of-type(4)').innerText = data.conversionRate || "0%";
-                
-                // Update AI Reports
-                document.getElementById('ai-takeaway').innerText = data.aiTakeaway || "No current takeaway data.";
-                document.getElementById('ai-advice').innerText = data.aiAdvice || "No operational advice generated.";
-            } catch (error) {
-                console.error("Error loading sync pipeline data feed:", error);
-            }
-        }
-
-        // Initialize Page Setup
-        loadDashboardData();
-
-        // Chart Configuration remains fast and responsive
+        // Initialize empty Chart object instance safely
         const ctx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(ctx, {
+        myChart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [11000, 10800, 14000, 13500, 17000, 16000, 11500, 14000, 15500, 14800, 16500, 16000],
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 2
-                }, {
-                    label: 'Gross Margin',
-                    data: [8000, 7500, 9500, 8200, 11000, 10000, 7800, 9200, 10500, 9800, 11200, 10500],
-                    borderColor: '#10b981',
-                    backgroundColor: 'transparent',
-                    fill: false,
-                    tension: 0.4,
-                    borderWidth: 2
-                }]
-            },
+            data: { labels: [], datasets: [] },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -148,6 +113,102 @@
                 }
             }
         });
+
+        // Updates data metrics layout on chart elements
+        function updateChartDisplay(datasetArray) {
+            if (!datasetArray) return;
+            
+            myChart.data.labels = datasetArray.map(item => item.label);
+            myChart.data.datasets = [
+                {
+                    label: 'Revenue',
+                    data: datasetArray.map(item => item.revenue),
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2
+                },
+                {
+                    label: 'Gross Margin',
+                    data: datasetArray.map(item => item.margin),
+                    borderColor: '#10b981',
+                    backgroundColor: 'transparent',
+                    fill: false,
+                    tension: 0.4,
+                    borderWidth: 2
+                }
+            ];
+            myChart.update();
+        }
+
+        // Handle Active Selection highlight styles on timeline buttons
+        function setButtonActive(activeId) {
+            const targets = ['btn-day', 'btn-week', 'btn-month', 'btn-inception'];
+            targets.forEach(id => {
+                const btn = document.getElementById(id);
+                if (id === activeId) {
+                    btn.className = "px-3 py-1.5 rounded-md bg-blue-600 text-white transition-all font-medium";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-md hover:bg-gray-800 text-gray-400 transition-all font-medium";
+                }
+            });
+        }
+
+        // Fetch your clean data.json file from the backend repository
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('./data.json');
+                const data = await response.json();
+
+                // Structural fallback safeguards mapping metrics cleanly to your n8n keys
+                const kpi = data.kpis || {};
+                document.getElementById('kpi-ad-spend').innerText = typeof kpi.totalAdSpend === 'number' ? `$${kpi.totalAdSpend.toLocaleString()}` : (kpi.totalAdSpend || "$0");
+                document.getElementById('kpi-roas').innerText = `● ${kpi.blendedRoas || '0x'} blended ROAS`;
+                document.getElementById('kpi-revenue').innerText = typeof kpi.totalClientRevenue === 'number' ? `$${kpi.totalClientRevenue.toLocaleString()}` : (kpi.totalClientRevenue || "$0");
+                document.getElementById('kpi-aov').innerText = `$${kpi.avgOrderValue || '0.00'} avg order value`;
+                document.getElementById('kpi-orders').innerText = typeof kpi.totalOrders === 'number' ? kpi.totalOrders.toLocaleString() : (kpi.totalOrders || "0");
+                document.getElementById('kpi-customers').innerText = `${typeof kpi.payingCustomers === 'number' ? kpi.payingCustomers.toLocaleString() : (kpi.payingCustomers || "0")} paying customers`;
+                document.getElementById('kpi-conversion').innerText = kpi.conversionRate || "0%";
+                
+                // Update AI Reports Info
+                const ai = data.ai_intelligence || {};
+                document.getElementById('ai-takeaway').innerText = ai.takeaway || "No current takeaway data loaded.";
+                document.getElementById('ai-advice').innerText = ai.actionable_advice || "No operational advice generated.";
+
+                // Store sub-arrays globally and setup initial default Month snapshot
+                if (data.graph_data) {
+                    cachedGraphData = data.graph_data;
+                    updateChartDisplay(cachedGraphData.month);
+                }
+            } catch (error) {
+                console.error("Error loading sync pipeline data feed:", error);
+            }
+        }
+
+        // Event listener navigation routines for timeframes
+        document.getElementById('btn-day').addEventListener('click', () => { setButtonActive('btn-day'); if (cachedGraphData) updateChartDisplay(cachedGraphData.day); });
+        document.getElementById('btn-week').addEventListener('click', () => { setButtonActive('btn-week'); if (cachedGraphData) updateChartDisplay(cachedGraphData.week); });
+        document.getElementById('btn-month').addEventListener('click', () => { setButtonActive('btn-month'); if (cachedGraphData) updateChartDisplay(cachedGraphData.month); });
+        document.getElementById('btn-inception').addEventListener('click', () => { setButtonActive('btn-inception'); if (cachedGraphData) updateChartDisplay(cachedGraphData.since_inception); });
+
+        // Blue Action Button triggered webhook functionality calling into your local n8n environment
+        document.getElementById('approve-report-btn').addEventListener('click', () => {
+            fetch('http://localhost:5678/webhook/3d7379a2-95c8-41b0-b4d5-2d9e281b1f24', {
+                method: 'POST'
+            })
+            .then(res => {
+                if(res.ok) alert('Report Approved! Webhook fired and n8n workflow executed successfully.');
+                else alert('Webhook sent but received an error status code.');
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Connection failure. Make sure your local n8n canvas execution environment is currently running!');
+            });
+        });
+
+        // Initialize data download
+        loadDashboardData();
     </script>
 </body>
 </html>

@@ -1,1 +1,43 @@
-{}
+{
+  "kpis": {
+    "totalAdSpend": "$9,450",
+    "blendedRoas": "24.1x",
+    "totalClientRevenue": "$174,828",
+    "avgOrderValue": "55.57",
+    "totalOrders": 3146,
+    "payingCustomers": 1257,
+    "conversionRate": "2.52%"
+  },
+  "ai_intelligence": {
+    "takeaway": "Paid acquisition scaling is stable. Blended ROAS remains highly efficient.",
+    "actionable_advice": "Ad spend efficiency is optimized. Consider increasing top-of-funnel budgets."
+  },
+  "graph_data": {
+    "day": [
+      { "label": "00:00", "revenue": 450, "margin": 310 },
+      { "label": "06:00", "revenue": 1200, "margin": 850 }
+    ],
+    "week": [
+      { "label": "Mon", "revenue": 12000, "margin": 8400 },
+      { "label": "Tue", "revenue": 14500, "margin": 9800 }
+    ],
+    "month": [
+      { "label": "Jul", "revenue": 11000, "margin": 8000 },
+      { "label": "Aug", "revenue": 10800, "margin": 7500 },
+      { "label": "Sep", "revenue": 14000, "margin": 9500 },
+      { "label": "Oct", "revenue": 13500, "margin": 8200 },
+      { "label": "Nov", "revenue": 17000, "margin": 11000 },
+      { "label": "Dec", "revenue": 16000, "margin": 10000 },
+      { "label": "Jan", "revenue": 11500, "margin": 7800 },
+      { "label": "Feb", "revenue": 14000, "margin": 9200 },
+      { "label": "Mar", "revenue": 15500, "margin": 10500 },
+      { "label": "Apr", "revenue": 14800, "margin": 9800 },
+      { "label": "May", "revenue": 16500, "margin": 11200 },
+      { "label": "Jun", "revenue": 16000, "margin": 10500 }
+    ],
+    "since_inception": [
+      { "label": "2024", "revenue": 120000, "margin": 82000 },
+      { "label": "2025", "revenue": 185000, "margin": 130000 }
+    ]
+  }
+}

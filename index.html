@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Marketing Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#0f111a] text-gray-100 font-sans min-h-screen">
+
+    <header class="border-b border-gray-800 bg-[#161925] px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">M</div>
+            <h1 class="text-xl font-bold tracking-tight">Agency Client Command Center</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20 font-medium">✨ Live Data Feed</span>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 space-y-6">
+        
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Ad Spend</p>
+                <h3 class="text-2xl font-bold mt-1 text-white">$7,707</h3>
+                <p class="text-xs text-emerald-400 mt-2 font-medium">● 22.7x blended ROAS</p>
+            </div>
+            <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Client Revenue</p>
+                <h3 class="text-2xl font-bold mt-1 text-white">$174,828</h3>
+                <p class="text-xs text-gray-400 mt-2">$55.57 avg order value</p>
+            </div>
+            <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Orders</p>
+                <h3 class="text-2xl font-bold mt-1 text-white">3,146</h3>
+                <p class="text-xs text-blue-400 mt-2">1,257 paying customers</p>
+            </div>
+            <div class="bg-[#161925] p-5 rounded-xl border border-gray-800 shadow-xl">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Conversion Rate</p>
+                <h3 class="text-2xl font-bold mt-1 text-white">2.52%</h3>
+                <p class="text-xs text-gray-400 mt-2">site visits ➔ orders</p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-[#161925] p-6 rounded-xl border border-gray-800 shadow-xl flex flex-col justify-between">
+                <div>
+                    <h4 class="text-sm font-bold text-gray-200">Revenue & Gross Margin Trend</h4>
+                    <p class="text-xs text-gray-400 mb-4">Monthly revenue vs gross margin performance</p>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-[#161925] p-6 rounded-xl border border-gray-800 shadow-xl flex flex-col justify-between border-l-4 border-l-blue-500">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-sm font-bold text-blue-400 uppercase tracking-wider">🤖 AI Weekly Intelligence</h4>
+                        <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-mono">READY</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">Generated insights based on past 7 days performance</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-[#0f111a] p-3 rounded-lg border border-gray-800">
+                            <span class="text-xs font-bold text-emerald-400">📈 Takeaway:</span>
+                            <p id="ai-takeaway" class="text-xs text-gray-300 mt-1 leading-relaxed">
+                                Loading dynamic marketing insight report... n8n pipeline configuration pending.
+                            </p>
+                        </div>
+                        <div class="bg-[#0f111a] p-3 rounded-lg border border-gray-800">
+                            <span class="text-xs font-bold text-amber-400">💡 Actionable Advice:</span>
+                            <p id="ai-advice" class="text-xs text-gray-300 mt-1 leading-relaxed">
+                                Connect your platforms via webhooks to surface automated strategy rules here.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <button class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 px-4 rounded-lg transition-colors shadow-lg shadow-blue-600/10">
+                    Approve & Copy Report
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [11000, 10800, 14000, 13500, 17000, 16000, 11500, 14000, 15500, 14800, 16500, 16000],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2
+                }, {
+                    label: 'Gross Margin',
+                    data: [8000, 7500, 9500, 8200, 11000, 10000, 7800, 9200, 10500, 9800, 11200, 10500],
+                    borderColor: '#10b981',
+                    backgroundColor: 'transparent',
+                    fill: false,
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

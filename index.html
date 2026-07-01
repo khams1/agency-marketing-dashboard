@@ -86,7 +86,35 @@
 
     </main>
 
-    <script>
+   <script>
+        // Fetch data.json and update the DOM elements dynamically
+        async function loadDashboardData() {
+            try {
+                // Fetch the JSON file from the repository root
+                const response = await fetch('./data.json');
+                const data = await response.json();
+
+                // Update UI Text Elements dynamically
+                document.querySelector('h3:nth-of-type(1)').innerText = data.totalAdSpend || "$0";
+                document.querySelector('p.text-emerald-400').innerText = data.blendedRoas || "";
+                document.querySelector('h3:nth-of-type(2)').innerText = data.totalRevenue || "$0";
+                document.querySelector('p.text-gray-400:nth-of-type(1)').innerText = data.avgOrderValue || "";
+                document.querySelector('h3:nth-of-type(3)').innerText = data.totalOrders || "0";
+                document.querySelector('p.text-blue-400').innerText = data.payingCustomers || "";
+                document.querySelector('h3:nth-of-type(4)').innerText = data.conversionRate || "0%";
+                
+                // Update AI Reports
+                document.getElementById('ai-takeaway').innerText = data.aiTakeaway || "No current takeaway data.";
+                document.getElementById('ai-advice').innerText = data.aiAdvice || "No operational advice generated.";
+            } catch (error) {
+                console.error("Error loading sync pipeline data feed:", error);
+            }
+        }
+
+        // Initialize Page Setup
+        loadDashboardData();
+
+        // Chart Configuration remains fast and responsive
         const ctx = document.getElementById('revenueChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',

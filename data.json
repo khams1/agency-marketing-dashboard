@@ -1,1 +1,29 @@
-{}
+let dashboardData = {};
+
+// 1. Fetch your dynamic JSON data file
+fetch('./data.json')
+  .then(response => response.json())
+  .then(data => {
+    dashboardData = data;
+    // Map your top KPIs securely
+    document.getElementById('total-ad-spend').innerText = `$${data.kpis.totalAdSpend.toLocaleString()}`;
+    document.getElementById('total-revenue').innerText = `$${data.kpis.totalClientRevenue.toLocaleString()}`;
+    
+    // Set up default graph timeline (Month)
+    updateGraph(data.graph_data.month);
+  });
+
+// 2. Wire up your timeframe buttons to switch graph data
+document.getElementById('btn-day').addEventListener('click', () => updateGraph(dashboardData.graph_data.day));
+document.getElementById('btn-week').addEventListener('click', () => updateGraph(dashboardData.graph_data.week));
+document.getElementById('btn-month').addEventListener('click', () => updateGraph(dashboardData.graph_data.month));
+document.getElementById('btn-inception').addEventListener('click', () => updateGraph(dashboardData.graph_data.since_inception));
+
+// 3. Connect your Blue Button to your exact n8n webhook URL
+document.getElementById('approve-report-btn').addEventListener('click', () => {
+  fetch('http://localhost:5678/webhook/3d7379a2-95c8-41b0-b4d5-2d9e281b1f24', {
+    method: 'POST'
+  })
+  .then(() => alert('Report Approved! n8n data pipeline triggered successfully.'))
+  .catch(err => console.error('Make sure your local n8n terminal window is open!', err));
+});
